@@ -3,6 +3,7 @@ import {createStackNavigator} from 'react-navigation'
 import Login from './Login';
 import Register from './Register';
 import Main from './Main';
+import Setting from './Setting';
 import Common from "../common";
 
 export default createStackNavigator({
@@ -10,13 +11,16 @@ export default createStackNavigator({
         screen: Login
     },
     Register: {
-        screen: Register,
+        screen: Register
     },
     Main: {
-        screen: Main,
+        screen: Main
+    },
+    Setting: {
+        screen: Setting
     }
 }, {
     headerLayoutPreset: 'center',
-    initialRouteName: 'Login'
+    initialRouteName: 'Main'
 });
 

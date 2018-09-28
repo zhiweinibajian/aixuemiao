@@ -3,7 +3,8 @@ import {View, Text, TextInput, TouchableOpacity, StyleSheet, Image, ScrollView} 
 import Icon from 'react-native-vector-icons/Ionicons';
 import EntypoIcon from 'react-native-vector-icons/Entypo';
 import Common from '../common';
-import Progress from '../components/Progress'
+import Progress from '../components/Progress';
+import ShopModal from '../components/ShopModal';
 
 export default class Home extends Component {
     static navigationOptions = {
@@ -19,39 +20,71 @@ export default class Home extends Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            showShopFeedModal: false,
+            showShopMedicalModal: false
+        };
+        this.goFeedModal = this.goFeedModal.bind(this);
+        this.onHideShopFeedModal = this.onHideShopFeedModal.bind(this);
+        this.onHideShopMedicalModal = this.onHideShopMedicalModal.bind(this);
+        this.goMedicalModal = this.goMedicalModal.bind(this);
     }
 
     // 饲料Modal
     goFeedModal() {
+        this.setState({
+            showShopFeedModal: true
+        });
+    }
 
+    // 退出Modal
+    onHideShopFeedModal(bool) {
+        this.setState({
+            showShopFeedModal: bool
+        });
+    }
+
+    onHideShopMedicalModal(bool) {
+        this.setState({
+            showShopMedicalModal: bool
+        });
     }
 
     // 药品Modal
     goMedicalModal() {
-
+        this.setState({
+            showShopMedicalModal: true
+        });
     }
 
     render() {
         return (
-            <ScrollView>
-                <View style={styles.container}>
-                    <View style={styles.flexRow}>
-                        <View>
-                            <View style={styles.flexRow}>
-                                <Text style={styles.marR15}>昵 称：</Text>
-                                <Text style={{color: Common.color.sub_theme}}>Kirito的猫</Text>
-                            </View>
-                            <View style={styles.flexRow}>
-                                <Text style={styles.marR15}>生命值</Text>
-                                <Progress progress={0.8}/>
-                            </View>
-                            <View style={styles.flexRow}>
-                                <Text style={styles.marR15}>健康值</Text>
-                                <Progress progress={0.3}/>
-                            </View>
+            <View style={styles.container}>
+                <ShopModal showShopModal={this.state.showShopFeedModal}
+                           onHideShopModal={this.onHideShopFeedModal}
+                           modalType={0}/>
+                <ShopModal showShopModal={this.state.showShopMedicalModal}
+                           onHideShopModal={this.onHideShopMedicalModal}
+                           modalType={1}/>
+                <View style={styles.flexRow}>
+                    <View>
+                        <View style={styles.flexRow}>
+                            <Text style={styles.marR15}>昵 称：</Text>
+                            <Text style={{color: Common.color.sub_theme}}>Kirito的猫</Text>
+                        </View>
+                        <View style={styles.flexRow}>
+                            <Text style={styles.marR15}>生命值</Text>
+                            <Progress progress={0.8}/>
+                        </View>
+                        <View style={styles.flexRow}>
+                            <Text style={styles.marR15}>健康值</Text>
+                            <Progress progress={0.3}/>
                         </View>
                     </View>
-                    <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
+                </View>
+                <View style={{flex: 1, justifyContent: 'center'}}>
+                    <View
+                        style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
                         <View>
                             <Image source={require('../assets/imgs/cat.gif')} style={{width: 240, height: 240}}/>
                         </View>
@@ -74,13 +107,14 @@ export default class Home extends Component {
                         <Text style={{textAlign: 'center', fontSize: 20}}>开始工作</Text>
                     </TouchableOpacity>
                 </View>
-            </ScrollView>
+            </View>
         );
     }
 }
 
 const styles = StyleSheet.create({
     container: {
+        flex: 1,
         padding: 25
     },
     btn: {

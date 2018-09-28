@@ -1,10 +1,11 @@
 import React, {Component} from 'react';
-import {View, Text, TextInput, TouchableOpacity, StyleSheet, Image, ScrollView} from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons'
-import FontAwesome from 'react-native-vector-icons/FontAwesome'
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
-import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
-import Common from '../common'
+import {View, Text, TextInput, TouchableOpacity, StyleSheet, Image, ScrollView, Alert, Linking} from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
+import Common from '../common';
+import ShareModal from './ShareModal';
 
 export default class Personal extends Component {
     static navigationOptions = {
@@ -20,49 +21,64 @@ export default class Personal extends Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            showShareModal: false
+        };
         this.goSetting = this.goSetting.bind(this);
         this.goChatRoom = this.goChatRoom.bind(this);
         this.goHandFriend = this.goHandFriend.bind(this);
-        this.goHandFriend = this.goHandFriend.bind(this);
+        this.goService = this.goService.bind(this);
+        this.onHideShareModal = this.onHideShareModal.bind(this);
     }
 
     // 跳转到设置
     goSetting() {
-
     }
 
     // 跳转到聊天室
     goChatRoom() {
-
     }
 
     // 跳转到邀请好友
     goHandFriend() {
+        this.setState({
+            showShareModal: true
+        });
+    }
 
+    onHideShareModal(bool) {
+        this.setState({
+            showShareModal: bool
+        });
     }
 
     // 跳转到客服
     goService() {
-
+        let tel = '17665038043';
+        Linking.openURL('tel:' + tel);
     }
 
     render() {
         return (
             <ScrollView>
                 <View style={styles.container}>
+                    <ShareModal showShareModal={this.state.showShareModal} onHideShareModal={this.onHideShareModal}/>
                     <View style={styles.messageContainer}>
                         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                            <View style={{width: 55, height: 55, borderRadius: 55}}>
-                                <Image source={require('../assets/imgs/cat.gif')}
-                                       style={{width: '100%', height: '100%'}}/>
+                            <View>
+                                <Image source={require('../assets/imgs/avatar.jpg')}
+                                       style={{width: 55, height: 55, borderRadius: 55}}/>
                             </View>
                             <View style={{justifyContent: 'center', marginLeft: 15}}>
                                 <Text>Kirito</Text>
                                 <Text>17665038043</Text>
                             </View>
                         </View>
-                        <View>
-                            <FontAwesome name='bell-o' size={25} color={Common.color.sub_theme}/>
+                        <View style={styles.tipContainer}>
+                            <TouchableOpacity>
+                                <FontAwesome name='bell-o' size={25} color={Common.color.sub_theme}/>
+                            </TouchableOpacity>
+                            <Text style={styles.tip}>99</Text>
                         </View>
                     </View>
                     <View style={styles.boxContainer}>
@@ -112,23 +128,24 @@ export default class Personal extends Component {
                             </View>
                         </View>
                         <View style={styles.RightContainer}>
-                            <Image source={require('../assets/imgs/cat.gif')} style={{width: 150, height: 150}}/>
+                            <Image source={require('../assets/imgs/avatar.jpg')}
+                                   style={{width: 150, height: 150, borderRadius: 150}}/>
                         </View>
                     </View>
                     <View style={styles.btnsContainer}>
-                        <TouchableOpacity onPress={this.goSetting()}>
+                        <TouchableOpacity onPress={this.goSetting}>
                             <Icon name='md-settings' size={35} color='#fff' style={styles.iconBg}/>
                             <Text style={styles.textCenter}>设置</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={this.goChatRoom()}>
+                        <TouchableOpacity onPress={this.goChatRoom}>
                             <Icon name='ios-chatbubbles' size={35} color='#fff' style={styles.iconBg}/>
                             <Text style={styles.textCenter}>聊天室</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={this.goHandFriend()}>
+                        <TouchableOpacity onPress={this.goHandFriend}>
                             <FontAwesome5 name='hand-holding' size={25} color='#fff' style={styles.iconBg}/>
                             <Text style={styles.textCenter}>邀请好友</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={this.goService()}>
+                        <TouchableOpacity onPress={this.goService}>
                             <MaterialIcon name='person-outline' size={35} color='#fff' style={styles.iconBg}/>
                             <Text style={styles.textCenter}>客服</Text>
                         </TouchableOpacity>
@@ -150,6 +167,23 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
         marginBottom: 15,
+        marginTop: 10
+    },
+    tipContainer: {
+        position: 'relative'
+    },
+    tip: {
+        position: 'absolute',
+        top: -2,
+        right: 0,
+        width: 12,
+        height: 12,
+        borderRadius: 12,
+        backgroundColor: 'red',
+        textAlign: 'center',
+        lineHeight: 12,
+        color: '#fff',
+        fontSize: 8
     },
     boxContainer: {
         flexDirection: 'row',
@@ -168,7 +202,8 @@ const styles = StyleSheet.create({
         paddingLeft: 20,
     },
     RightContainer: {
-        justifyContent: 'center'
+        justifyContent: 'center',
+        paddingRight: 10
     },
     textContainer: {
         flexDirection: 'row',
